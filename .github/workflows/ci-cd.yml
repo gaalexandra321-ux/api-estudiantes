@@ -1,0 +1,28 @@
+name: CI/CD Node.js Docker
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Copiar repositorio
+      uses: actions/checkout@v4
+
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Instalar dependencias
+      run: npm install
+
+    - name: Construir imagen Docker de prueba
+      run: docker build -t api-estudiantes:${{ github.sha }} .
+      
